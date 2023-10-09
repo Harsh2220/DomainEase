@@ -1,4 +1,5 @@
 import { response } from "@/app/search/page";
+import useAppState, { useModalStore } from "@/store/store";
 import formatAddress from "@/utils/formatAdress";
 import React from "react";
 
@@ -37,6 +38,8 @@ export default function BnbCard({
   name: string;
   data: response;
 }) {
+  const { setSelectedDomain } = useAppState();
+  const { toggle } = useModalStore();
   return (
     <div className="flex items-center justify-between md:max-w-lg mx-auto">
       <div className="flex items-center">
@@ -46,7 +49,14 @@ export default function BnbCard({
       {data?.address === "0x0000000000000000000000000000000000000000" ? (
         <button
           className="inline-block px-4 py-2 text-xs font-medium tracking-tighter bg-green-400 hover:bg-green-500 text-black focus:ring-4 focus:ring-green-500 focus:ring-opacity-40 rounded-full transition duration-300"
-          onClick={() => {}}
+          onClick={() => {
+            toggle();
+            setSelectedDomain({
+              address: data?.address,
+              code: data?.code,
+              domainName: name + ".bnb",
+            });
+          }}
         >
           Buy now
         </button>
